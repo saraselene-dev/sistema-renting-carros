@@ -30,4 +30,9 @@ public class CamionetaSUV extends Vehiculo {
         CapacidadMaletero = capacidadMaletero;
     }
 
+    @Override
+    public String getTipo() {
+        return "Camioneta SUV";
+    }
+
 }

@@ -1,4 +1,4 @@
-public class Vehiculo {
+public abstract class Vehiculo {
 
     private String Placa;
     private String Marca;
@@ -19,10 +19,6 @@ public class Vehiculo {
 
     public String getPlaca() {
         return Placa;
-    }
-
-    public void setPlaca(String placa) {
-        Placa = placa;
     }
 
     public String getMarca() {
@@ -56,5 +52,7 @@ public class Vehiculo {
     public void setEstado(String estado) {
         Estado = estado;
     }
+
+    public abstract String getTipo();
 
 }

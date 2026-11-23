@@ -1,4 +1,7 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Principal {
     public static void main(String[] args) {
@@ -6,6 +9,10 @@ public class Principal {
         Utilidades u = new Utilidades();
         int opc;
         boolean continuar = true;
+        LinkedList<Cliente> registroClientes = new LinkedList<>();
+        LinkedList<Vehiculo> registroVehiculos = new LinkedList<>();
+        Queue<ContratoRenting> contratosActivos = new LinkedList<>();
+        Stack<ContratoRenting> contratosFinalizados = new Stack<>();
 
         while (continuar) {
             System.out.println("-------------------------------------");
@@ -14,25 +21,28 @@ public class Principal {
             opc = u.opcionesMenuPrincipal(sc);
             switch (opc) {
                 case 1:
-                    u.selectorGestionClientes(sc);
+                    registroClientes = u.selectorGestionClientes(registroClientes, contratosActivos,
+                            contratosFinalizados, registroVehiculos, sc);
                     break;
                 case 2:
-                    u.selectorGestionVehiculos(sc);
+                    registroVehiculos = u.selectorGestionVehiculos(registroVehiculos, sc);
                     break;
                 case 3:
-                    u.selectorGestionContratos(sc);
+                    contratosActivos = u.selectorGestionContratos(contratosActivos, contratosFinalizados,
+                            registroClientes, registroVehiculos, sc);
                     break;
                 case 4:
-                    System.out.println("Pagina en mantenimiento.");
+                    System.out.println("Página en mantenimiento.");
                     break;
                 case 5:
                     System.out.println("Saliendo...");
                     continuar = false;
                     break;
                 default:
-                    System.out.println("Digite un valor correcto (1-5)");
+                    System.out.println("Ingrese un valor correcto (1-5).");
                     break;
             }
         }
+        sc.close();
     }
 }
