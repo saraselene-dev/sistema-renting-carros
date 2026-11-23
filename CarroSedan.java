@@ -29,4 +29,9 @@ public class CarroSedan extends Vehiculo {
         Transmision = transmision;
     }
 
+    @Override
+    public String getTipo() {
+        return "Sedan";
+    }
+
 }
