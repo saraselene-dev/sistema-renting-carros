@@ -14,7 +14,6 @@ Docente: Dennis Arlex Garro Agudelo.
 
 Requisitos: Java (JDK 8 o superior).
 
-```
 Abrir la carpeta en Visual Studio Code y ejecutar `Principal.java` con el botón **Run**.
 
 ## Estructura del proyecto
