@@ -869,4 +869,58 @@ public class Utilidades {
         return contratosActivos;
     }
 
+    // Informe general: con todos los registros, los contratos agrupados y los
+    // ingresos
+    public String generarInforme(LinkedList<Cliente> registroClientes, LinkedList<Vehiculo> registroVehiculos,
+            Queue<ContratoRenting> contratosActivos, Stack<ContratoRenting> contratosFinalizados) {
+        String texto = "========== INFORME GENERAL ==========\n";
+
+        texto += "\n----- CLIENTES -----\n";
+        if (registroClientes.isEmpty()) {
+            texto += "No hay clientes registrados.\n";
+        } else {
+            for (Cliente c : registroClientes) {
+                texto += mostrar(c) + "\n-------------------------------------\n";
+            }
+        }
+
+        texto += "\n----- VEHÍCULOS -----\n";
+        if (registroVehiculos.isEmpty()) {
+            texto += "No hay vehículos registrados.\n";
+        } else {
+            for (Vehiculo v : registroVehiculos) {
+                texto += mostrar(v) + "\n-------------------------------------\n";
+            }
+        }
+
+        float ingresosPorRecibir = 0;
+        texto += "\n----- CONTRATOS ACTIVOS -----\n";
+        if (contratosActivos.isEmpty()) {
+            texto += "No hay contratos activos.\n";
+        } else {
+            for (ContratoRenting c : contratosActivos) {
+                texto += mostrar(c, contratosActivos) + "\n-------------------------------------\n";
+                ingresosPorRecibir += c.getValorTotal();
+            }
+        }
+
+        float ingresosRecibidos = 0;
+        texto += "\n----- CONTRATOS FINALIZADOS -----\n";
+        if (contratosFinalizados.isEmpty()) {
+            texto += "No hay contratos finalizados.\n";
+        } else {
+            for (ContratoRenting c : contratosFinalizados) {
+                texto += mostrar(c, contratosActivos) + "\n-------------------------------------\n";
+                ingresosRecibidos += c.getValorTotal();
+            }
+        }
+
+        texto += "\n----- INGRESOS -----\n";
+        texto += "Ingresos recibidos (contratos finalizados): " + ingresosRecibidos + "\n";
+        texto += "Ingresos por recibir (contratos activos): " + ingresosPorRecibir + "\n";
+        texto += "Total de ingresos por renting: " + (ingresosRecibidos + ingresosPorRecibir) + "\n";
+        texto += "=====================================";
+        return texto;
+    }
+
 }
