@@ -629,6 +629,7 @@ public class Utilidades {
         contadorContratos++;
         System.out.println("Contrato registrado correctamente.");
         System.out.println("ID del contrato: " + id);
+        System.out.println(mostrar(nuevoContratoRenting, contratosActivos));
         return contratosActivos;
     }
 
@@ -825,6 +826,7 @@ public class Utilidades {
             vehiculo.setEstado("Disponible");
         }
         System.out.println("Contrato finalizado correctamente.");
+        System.out.println(mostrar(contrato, contratosActivos));
         return contratosActivos;
     }
 
