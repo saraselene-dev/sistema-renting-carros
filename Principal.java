@@ -32,7 +32,8 @@ public class Principal {
                             registroClientes, registroVehiculos, sc);
                     break;
                 case 4:
-                    System.out.println("Página en mantenimiento.");
+                    System.out.println(u.generarInforme(registroClientes, registroVehiculos, contratosActivos,
+                            contratosFinalizados));
                     break;
                 case 5:
                     System.out.println("Saliendo...");
