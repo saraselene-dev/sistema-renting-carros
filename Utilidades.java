@@ -197,7 +197,7 @@ public class Utilidades {
         do {
             existe = false;
             System.out.print("Cédula: ");
-            cedula = va.validarAlfanumerico(sc);
+            cedula = va.validarSoloNumeros(sc);
             Cliente cliente = buscarCliente(registroClientes, cedula);
 
             if (cliente != null) {
@@ -212,7 +212,7 @@ public class Utilidades {
 
     public Cliente pedirClienteRegistrado(LinkedList<Cliente> registroClientes, Scanner sc) {
         System.out.print("Cédula: ");
-        String cedula = va.validarAlfanumerico(sc);
+        String cedula = va.validarSoloNumeros(sc);
         Cliente cliente = buscarCliente(registroClientes, cedula);
         if (cliente == null) {
             System.out.println("Cliente no encontrado.");
@@ -365,7 +365,7 @@ public class Utilidades {
     public String consultarCliente(LinkedList<Cliente> registroClientes, Scanner sc) {
         System.out.println("Buscar cliente.");
         System.out.print("Cédula: ");
-        String cedula = va.validarAlfanumerico(sc);
+        String cedula = va.validarSoloNumeros(sc);
         Cliente cliente = buscarCliente(registroClientes, cedula);
         String texto;
         if (cliente == null) {
@@ -413,7 +413,8 @@ public class Utilidades {
         do {
             existe = false;
             System.out.print("Placa: ");
-            placa = va.validarAlfanumerico(sc);
+            // La placa se guarda en mayúscula para que se muestre siempre igual
+            placa = va.validarAlfanumerico(sc).toUpperCase();
 
             for (Vehiculo v : registroVehiculos) {
                 if (placa.equalsIgnoreCase(v.getPlaca())) {
