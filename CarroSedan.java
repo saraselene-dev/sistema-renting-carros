@@ -31,7 +31,7 @@ public class CarroSedan extends Vehiculo {
 
     @Override
     public String getTipo() {
-        return "Sedan";
+        return "Sedán";
     }
 
 }

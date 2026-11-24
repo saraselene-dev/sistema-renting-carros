@@ -54,6 +54,7 @@ Las estructuras crecen al registrar y se reducen al eliminar y se mantienen sinc
 - Al finalizar un contrato, pasa de la cola a la pila y el vehículo vuelve a **Disponible**.
 - Al eliminar un cliente, se elimina su contrato activo y se libera el vehículo. Los contratos finalizados se conservan en el historial, porque representan ingresos ya recibidos.
 - No se puede eliminar un vehículo que esté alquilado.
+- Al registrar y al finalizar un contrato, se muestra el contrato completo.
 
 ## Principios de la POO
 
@@ -78,13 +79,15 @@ Todas las entradas se validan con métodos **recursivos** de la clase `Validacio
 - Ningún campo puede quedar vacío.
 - Números con `try-catch` (`NumberFormatException`) y fechas con `try-catch` (`DateTimeParseException`), en formato DD/MM/AAAA.
 - Opciones de menú controladas por rango.
-- Nombre, apellido y marca: solo letras. Cédula, placa y licencia: sin caracteres especiales. Teléfono: solo números. Dirección: letras, números y los símbolos `# - . , /`.
+- Nombre, apellido y marca: solo letras. Cédula y teléfono: solo números. Placa y licencia: sin caracteres especiales; la placa se guarda en mayúscula. Dirección: letras, números y los símbolos `# - . , /`.
 - Modelo: año entre 1990 y 2028. Precio diario, capacidad del maletero y días: mayores que cero.
 - Tracción, combustible y transmisión se escogen de un menú, para guardar solo los valores permitidos.
+- Fecha de inicio: no puede ser anterior a la fecha actual.
+- El registro de un vehículo se puede cancelar con la opción 0.
 
 ## Informe general
 
-La opción 4 muestra todos los clientes, vehículos, contratos activos y contratos finalizados, y calcula los ingresos recibidos (contratos finalizados), los ingresos por recibir (contratos activos) y el total de ingresos por renting.
+La opción 4 muestra todos los clientes, vehículos, contratos activos y contratos finalizados, y calcula los ingresos recibidos (contratos finalizados), los ingresos por recibir (contratos activos) y el total de ingresos por renting. Los precios y totales se muestran en pesos con separador de miles (por ejemplo, $ 100.000).
 
 ## Historias de usuario y ramas
 
@@ -101,3 +104,4 @@ El proyecto se desarrolló siguiendo las historias de usuario en orden, con una 
 | `HU6-correccion` | Ajustes a la eliminación de clientes y al precio de vehículos alquilados |
 | `HU7` | Impresión de informes y consultas |
 | `HU8` | Validaciones finales y control de flujo |
+| `ajustes-finales` | Ajustes derivados de las pruebas finales del sistema |

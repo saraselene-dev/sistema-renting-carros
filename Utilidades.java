@@ -100,8 +100,8 @@ public class Utilidades {
         // este metodo retorna la estructura principal de su gestion (registroClientes),
         // la cola de contratosActivos y la lista registroVehiculos se modifican por
         // referencia
-        // CAMBIO: la pila de contratosFinalizados ya no se modifica al eliminar un
-        // cliente
+        // la pila de contratosFinalizados no se modifica al eliminar un cliente,
+        // porque sus contratos finalizados se conservan como historial de ingresos
         return registroClientes;
     }
 
@@ -197,7 +197,7 @@ public class Utilidades {
         do {
             existe = false;
             System.out.print("Cédula: ");
-            cedula = va.validarAlfanumerico(sc);
+            cedula = va.validarSoloNumeros(sc);
             Cliente cliente = buscarCliente(registroClientes, cedula);
 
             if (cliente != null) {
@@ -212,7 +212,7 @@ public class Utilidades {
 
     public Cliente pedirClienteRegistrado(LinkedList<Cliente> registroClientes, Scanner sc) {
         System.out.print("Cédula: ");
-        String cedula = va.validarAlfanumerico(sc);
+        String cedula = va.validarSoloNumeros(sc);
         Cliente cliente = buscarCliente(registroClientes, cedula);
         if (cliente == null) {
             System.out.println("Cliente no encontrado.");
@@ -311,7 +311,7 @@ public class Utilidades {
 
         String cedula = cliente.getCedula();
         int cantidadContratos = 0;
-        // CAMBIO: solo se cuentan los contratos activos, que son los que se eliminan.
+        // Solo se cuentan los contratos activos, que son los que se eliminan.
         for (ContratoRenting c : contratosActivos) {
             if (cedula.equals(c.getCedulaCliente())) {
                 cantidadContratos++;
@@ -348,7 +348,7 @@ public class Utilidades {
                     }
                     contratosActivos.remove(c);
                 }
-                // CAMBIO: los contratos finalizados del cliente se conservan (historial e
+                // Los contratos finalizados del cliente se conservan (historial e
                 // ingresos)
 
                 registroClientes.remove(cliente);
@@ -365,7 +365,7 @@ public class Utilidades {
     public String consultarCliente(LinkedList<Cliente> registroClientes, Scanner sc) {
         System.out.println("Buscar cliente.");
         System.out.print("Cédula: ");
-        String cedula = va.validarAlfanumerico(sc);
+        String cedula = va.validarSoloNumeros(sc);
         Cliente cliente = buscarCliente(registroClientes, cedula);
         String texto;
         if (cliente == null) {
@@ -379,8 +379,12 @@ public class Utilidades {
     public LinkedList<Vehiculo> registrarVehiculo(LinkedList<Vehiculo> registroVehiculos, Scanner sc) {
         Vehiculo nuevoVehiculo;
         System.out.println("Registrar vehículo.");
-        System.out.print("Tipo vehículo (1. Sedan, 2. Camioneta SUV): ");
-        int tipo = va.validarRango(sc, 1, 2);
+        System.out.print("Tipo de vehículo (1. Sedán, 2. Camioneta SUV, 0. Cancelar): ");
+        int tipo = va.validarRango(sc, 0, 2);
+        if (tipo == 0) {
+            System.out.println("Registro cancelado.");
+            return registroVehiculos;
+        }
         String placa = pedirPlacaNueva(registroVehiculos, sc);
         System.out.print("Marca: ");
         String marca = va.validarTexto(sc);
@@ -413,7 +417,8 @@ public class Utilidades {
         do {
             existe = false;
             System.out.print("Placa: ");
-            placa = va.validarAlfanumerico(sc);
+            // La placa se guarda en mayúscula para que se muestre siempre igual
+            placa = va.validarAlfanumerico(sc).toUpperCase();
 
             for (Vehiculo v : registroVehiculos) {
                 if (placa.equalsIgnoreCase(v.getPlaca())) {
@@ -514,7 +519,7 @@ public class Utilidades {
                     System.out.println("Modelo actualizado.");
                     break;
                 case 3:
-                    // CAMBIO: no se permite cambiar el precio de un vehículo alquilado,
+                    // No se permite cambiar el precio de un vehículo alquilado,
                     // para respetar la tarifa pactada en su contrato activo
                     if (vehiculo.getEstado().equalsIgnoreCase("Alquilado")) {
                         System.out.println("No se puede cambiar el precio de un vehículo alquilado.");
@@ -666,7 +671,13 @@ public class Utilidades {
 
     public LocalDate pedirFecha(Scanner sc) {
         System.out.print("Fecha de inicio (DD/MM/AAAA): ");
-        return va.validarFecha(sc);
+        LocalDate fecha = va.validarFecha(sc);
+        // Un alquiler no puede empezar en el pasado
+        if (fecha.isBefore(LocalDate.now())) {
+            System.out.println("La fecha de inicio no puede ser anterior a hoy.");
+            return pedirFecha(sc);
+        }
+        return fecha;
     }
 
     public int pedirDias(Scanner sc) {
@@ -891,7 +902,7 @@ public class Utilidades {
     }
 
     public String pedirTraccion(Scanner sc) {
-        System.out.print("Tipo tracción (1. 4x2 / 2. 4x4): ");
+        System.out.print("Tipo de tracción (1. 4x2 / 2. 4x4): ");
         int opc = va.validarRango(sc, 1, 2);
         if (opc == 1) {
             return "4x2";
