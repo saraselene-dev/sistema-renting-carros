@@ -104,4 +104,8 @@ El proyecto se desarrolló siguiendo las historias de usuario en orden, con una 
 | `HU6-correccion` | Ajustes a la eliminación de clientes y al precio de vehículos alquilados |
 | `HU7` | Impresión de informes y consultas |
 | `HU8` | Validaciones finales y control de flujo |
-| `ajustes-finales` | Ajustes derivados de las pruebas finales del sistema |
+| `documentacion` | Creación del README del proyecto |
+| `HU6-ajustes` | Ajustes de presentación y detalle del contrato |
+| `HU7-ajustes` | Formato de moneda en precios e informe |
+| `HU8-ajustes` | Ajustes de validaciones a partir de las pruebas |
+| `documentacion-ajustes` | Actualización del README con los ajustes finales |
