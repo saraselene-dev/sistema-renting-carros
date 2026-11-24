@@ -100,8 +100,8 @@ public class Utilidades {
         // este metodo retorna la estructura principal de su gestion (registroClientes),
         // la cola de contratosActivos y la lista registroVehiculos se modifican por
         // referencia
-        // CAMBIO: la pila de contratosFinalizados ya no se modifica al eliminar un
-        // cliente
+        // la pila de contratosFinalizados no se modifica al eliminar un cliente,
+        // porque sus contratos finalizados se conservan como historial de ingresos
         return registroClientes;
     }
 
@@ -311,7 +311,7 @@ public class Utilidades {
 
         String cedula = cliente.getCedula();
         int cantidadContratos = 0;
-        // CAMBIO: solo se cuentan los contratos activos, que son los que se eliminan.
+        // Solo se cuentan los contratos activos, que son los que se eliminan.
         for (ContratoRenting c : contratosActivos) {
             if (cedula.equals(c.getCedulaCliente())) {
                 cantidadContratos++;
@@ -348,7 +348,7 @@ public class Utilidades {
                     }
                     contratosActivos.remove(c);
                 }
-                // CAMBIO: los contratos finalizados del cliente se conservan (historial e
+                // Los contratos finalizados del cliente se conservan (historial e
                 // ingresos)
 
                 registroClientes.remove(cliente);
@@ -519,7 +519,7 @@ public class Utilidades {
                     System.out.println("Modelo actualizado.");
                     break;
                 case 3:
-                    // CAMBIO: no se permite cambiar el precio de un vehículo alquilado,
+                    // No se permite cambiar el precio de un vehículo alquilado,
                     // para respetar la tarifa pactada en su contrato activo
                     if (vehiculo.getEstado().equalsIgnoreCase("Alquilado")) {
                         System.out.println("No se puede cambiar el precio de un vehículo alquilado.");
@@ -902,7 +902,7 @@ public class Utilidades {
     }
 
     public String pedirTraccion(Scanner sc) {
-        System.out.print("Tipo tracción (1. 4x2 / 2. 4x4): ");
+        System.out.print("Tipo de tracción (1. 4x2 / 2. 4x4): ");
         int opc = va.validarRango(sc, 1, 2);
         if (opc == 1) {
             return "4x2";
