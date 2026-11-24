@@ -3,6 +3,7 @@ import java.util.Stack;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Queue;
 
 public class Utilidades {
@@ -439,7 +440,7 @@ public class Utilidades {
         String texto = "Placa: " + vehiculo.getPlaca() + "\n";
         texto += "Marca: " + vehiculo.getMarca() + "\n";
         texto += "Modelo: " + vehiculo.getModelo() + "\n";
-        texto += "Precio diario: " + vehiculo.getPrecioDiario() + "\n";
+        texto += "Precio diario: " + formatoPrecio(vehiculo.getPrecioDiario()) + "\n";
         texto += "Estado: " + vehiculo.getEstado() + "\n";
         texto += "Tipo: " + vehiculo.getTipo() + "\n";
 
@@ -674,6 +675,11 @@ public class Utilidades {
 
     }
 
+    // Formatea un valor en pesos colombianos: con $, punto de miles y sin decimales
+    public String formatoPrecio(float valor) {
+        return "$ " + String.format(Locale.forLanguageTag("es-CO"), "%,.0f", valor);
+    }
+
     public float calcularValor(int cantidadDias, float precioDiario) {
         float valorTotal = precioDiario * cantidadDias;
         return valorTotal;
@@ -703,7 +709,7 @@ public class Utilidades {
         texto += "Fecha de inicio: " + contrato.getFechaInicio() + "\n";
         texto += "Fecha de fin: " + contrato.getFechaFin() + "\n";
         texto += "Total días: " + contrato.getTotalDias() + "\n";
-        texto += "Valor total: " + contrato.getValorTotal() + "\n";
+        texto += "Valor total: " + formatoPrecio(contrato.getValorTotal()) + "\n";
 
         if (contratosActivos.contains(contrato)) {
             texto += "Estado: Activo";
@@ -877,9 +883,9 @@ public class Utilidades {
         }
 
         texto += "\n----- INGRESOS -----\n";
-        texto += "Ingresos recibidos (contratos finalizados): " + ingresosRecibidos + "\n";
-        texto += "Ingresos por recibir (contratos activos): " + ingresosPorRecibir + "\n";
-        texto += "Total de ingresos por renting: " + (ingresosRecibidos + ingresosPorRecibir) + "\n";
+        texto += "Ingresos recibidos (contratos finalizados): " + formatoPrecio(ingresosRecibidos) + "\n";
+        texto += "Ingresos por recibir (contratos activos): " + formatoPrecio(ingresosPorRecibir) + "\n";
+        texto += "Total de ingresos por renting: " + formatoPrecio(ingresosRecibidos + ingresosPorRecibir) + "\n";
         texto += "=====================================";
         return texto;
     }
