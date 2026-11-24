@@ -239,7 +239,7 @@ public class Utilidades {
 
         boolean salir = false;
         while (!salir) {
-
+            System.out.println("-------------------------------------");
             System.out.println(mostrar(cliente));
             System.out.println("Ingrese el campo a modificar: ");
             System.out.println("1. Nombre.");
@@ -284,7 +284,6 @@ public class Utilidades {
                     System.out.println("Ingrese un valor correcto (1-6).");
                     break;
             }
-            System.out.println("-------------------------------------");
         }
         return registroClientes;
     }
@@ -358,16 +357,19 @@ public class Utilidades {
                 System.out.println("Acción cancelada.");
                 salir = true;
             }
-            System.out.println("-------------------------------------");
         }
         return registroClientes;
     }
 
     public String consultarCliente(LinkedList<Cliente> registroClientes, Scanner sc) {
         System.out.println("Buscar cliente.");
-        Cliente cliente = pedirClienteRegistrado(registroClientes, sc);
-        String texto = "";
-        if (cliente != null) {
+        System.out.print("Cédula: ");
+        String cedula = va.validarAlfanumerico(sc);
+        Cliente cliente = buscarCliente(registroClientes, cedula);
+        String texto;
+        if (cliente == null) {
+            texto = "Cliente no encontrado.";
+        } else {
             texto = mostrar(cliente);
         }
         return texto;
@@ -482,6 +484,7 @@ public class Utilidades {
         boolean esSUV = vehiculo instanceof CamionetaSUV;
         boolean salir = false;
         while (!salir) {
+            System.out.println("-------------------------------------");
             System.out.println(mostrar(vehiculo));
             System.out.println("Ingrese el campo a modificar: ");
             System.out.println("1. Marca.");
@@ -546,7 +549,6 @@ public class Utilidades {
                     System.out.println("Ingrese un valor correcto (1-6).");
                     break;
             }
-            System.out.println("-------------------------------------");
         }
         return registroVehiculos;
     }
@@ -585,7 +587,6 @@ public class Utilidades {
                 System.out.println("Acción cancelada.");
                 salir = true;
             }
-            System.out.println("-------------------------------------");
         }
         return registroVehiculos;
     }
@@ -628,6 +629,7 @@ public class Utilidades {
         contadorContratos++;
         System.out.println("Contrato registrado correctamente.");
         System.out.println("ID del contrato: " + id);
+        System.out.println(mostrar(nuevoContratoRenting, contratosActivos));
         return contratosActivos;
     }
 
@@ -752,7 +754,7 @@ public class Utilidades {
 
         boolean salir = false;
         while (!salir) {
-
+            System.out.println("-------------------------------------");
             System.out.println(mostrar(contrato, contratosActivos));
             System.out.println("Ingrese el campo a modificar: ");
             System.out.println("1. Fecha de inicio.");
@@ -795,7 +797,6 @@ public class Utilidades {
                 contrato.setValorTotal(valorTotal);
                 System.out.println("Contrato actualizado.");
             }
-            System.out.println("-------------------------------------");
         }
         return contratosActivos;
     }
@@ -825,6 +826,7 @@ public class Utilidades {
             vehiculo.setEstado("Disponible");
         }
         System.out.println("Contrato finalizado correctamente.");
+        System.out.println(mostrar(contrato, contratosActivos));
         return contratosActivos;
     }
 
