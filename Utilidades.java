@@ -97,8 +97,10 @@ public class Utilidades {
             System.out.println("-------------------------------------");
         }
         // este metodo retorna la estructura principal de su gestion (registroClientes),
-        // la cola de contratosActivos, la pila de contratosFinalizados y la lista
-        // registroVehiculos se modifican por referencia
+        // la cola de contratosActivos y la lista registroVehiculos se modifican por
+        // referencia
+        // CAMBIO: la pila de contratosFinalizados ya no se modifica al eliminar un
+        // cliente
         return registroClientes;
     }
 
@@ -310,12 +312,8 @@ public class Utilidades {
 
         String cedula = cliente.getCedula();
         int cantidadContratos = 0;
+        // CAMBIO: solo se cuentan los contratos activos, que son los que se eliminan.
         for (ContratoRenting c : contratosActivos) {
-            if (cedula.equals(c.getCedulaCliente())) {
-                cantidadContratos++;
-            }
-        }
-        for (ContratoRenting c : contratosFinalizados) {
             if (cedula.equals(c.getCedulaCliente())) {
                 cantidadContratos++;
             }
@@ -350,17 +348,10 @@ public class Utilidades {
                         vehiculo.setEstado("Disponible");
                     }
                     contratosActivos.remove(c);
-                }
 
-                LinkedList<ContratoRenting> finalizadosCliente = new LinkedList<>();
-                for (ContratoRenting c : contratosFinalizados) {
-                    if (cedula.equals(c.getCedulaCliente())) {
-                        finalizadosCliente.add(c);
-                    }
                 }
-                for (ContratoRenting c : finalizadosCliente) {
-                    contratosFinalizados.remove(c);
-                }
+                // CAMBIO: los contratos finalizados del cliente se conservan (historial e
+                // ingresos)
 
                 registroClientes.remove(cliente);
                 System.out.println("Cliente eliminado correctamente.");
@@ -536,10 +527,16 @@ public class Utilidades {
                     System.out.println("Modelo actualizado.");
                     break;
                 case 3:
-                    System.out.print("Nuevo precio diario: ");
-                    vehiculo.setPrecioDiario(sc.nextFloat());
-                    sc.nextLine();
-                    System.out.println("Precio diario actualizado.");
+                    // CAMBIO: no se permite cambiar el precio de un vehículo alquilado,
+                    // para respetar la tarifa pactada en su contrato activo
+                    if (vehiculo.getEstado().equalsIgnoreCase("Alquilado")) {
+                        System.out.println("No se puede cambiar el precio de un vehículo alquilado.");
+                    } else {
+                        System.out.print("Nuevo precio diario: ");
+                        vehiculo.setPrecioDiario(sc.nextFloat());
+                        sc.nextLine();
+                        System.out.println("Precio diario actualizado.");
+                    }
                     break;
                 case 4:
                     if (esSedan) {
