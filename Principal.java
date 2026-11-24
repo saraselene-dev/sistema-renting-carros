@@ -15,9 +15,6 @@ public class Principal {
         Stack<ContratoRenting> contratosFinalizados = new Stack<>();
 
         while (continuar) {
-            System.out.println("-------------------------------------");
-            System.out.println("SISTEMA GESTIÓN DE RENTING DE CARROS");
-            System.out.println("-------------------------------------");
             opc = u.opcionesMenuPrincipal(sc);
             switch (opc) {
                 case 1:

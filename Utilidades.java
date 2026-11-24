@@ -9,16 +9,19 @@ public class Utilidades {
 
     private final DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private int contadorContratos = 1;
+    private Validaciones va = new Validaciones();
 
     public int opcionesMenuPrincipal(Scanner sc) {
+        System.out.println("-------------------------------------");
+        System.out.println("SISTEMA GESTIÓN DE RENTING DE CARROS");
+        System.out.println("-------------------------------------");
         System.out.println("1. GESTIÓN DE CLIENTES.");
         System.out.println("2. GESTIÓN DE VEHÍCULOS.");
         System.out.println("3. GESTIÓN DE CONTRATOS DE RENTING.");
         System.out.println("4. IMPRIMIR INFORME GENERAL.");
         System.out.println("5. SALIR DEL SISTEMA.");
         System.out.print("Ingrese una opción: ");
-        int opc = sc.nextInt();
-        sc.nextLine();
+        int opc = va.validarRango(sc, 1, 5);
         System.out.println("-------------------------------------");
         return opc;
     }
@@ -31,9 +34,8 @@ public class Utilidades {
         System.out.println("1.4. Buscar cliente.");
         System.out.println("1.5. Volver al menú principal.");
         System.out.print("Ingrese una opción: 1.");
-        int opc = sc.nextInt();
+        int opc = va.validarRango(sc, 1, 5);
         System.out.println("-------------------------------------");
-        sc.nextLine();
         return opc;
     }
 
@@ -45,9 +47,8 @@ public class Utilidades {
         System.out.println("2.4. Buscar vehículo.");
         System.out.println("2.5. Volver al menú principal.");
         System.out.print("Ingrese una opción: 2.");
-        int opc = sc.nextInt();
+        int opc = va.validarRango(sc, 1, 5);
         System.out.println("-------------------------------------");
-        sc.nextLine();
         return opc;
     }
 
@@ -59,9 +60,8 @@ public class Utilidades {
         System.out.println("3.4. Buscar contrato.");
         System.out.println("3.5. Volver al menú principal.");
         System.out.print("Ingrese una opción: 3.");
-        int opc = sc.nextInt();
+        int opc = va.validarRango(sc, 1, 5);
         System.out.println("-------------------------------------");
-        sc.nextLine();
         return opc;
     }
 
@@ -175,15 +175,15 @@ public class Utilidades {
         System.out.println("Registrar cliente.");
         nuevoCliente.setCedula(pedirCedulaNueva(registroClientes, sc));
         System.out.print("Nombre: ");
-        nuevoCliente.setNombre(sc.nextLine());
+        nuevoCliente.setNombre(va.validarTexto(sc));
         System.out.print("Apellido: ");
-        nuevoCliente.setApellido(sc.nextLine());
+        nuevoCliente.setApellido(va.validarTexto(sc));
         System.out.print("Teléfono: ");
-        nuevoCliente.setTelefono(sc.nextLine());
+        nuevoCliente.setTelefono(va.validarSoloNumeros(sc));
         System.out.print("Dirección: ");
-        nuevoCliente.setDireccion(sc.nextLine());
+        nuevoCliente.setDireccion(va.validarDireccion(sc));
         System.out.print("Licencia: ");
-        nuevoCliente.setLicenciaConduccion(sc.nextLine());
+        nuevoCliente.setLicenciaConduccion(va.validarAlfanumerico(sc));
         registroClientes.add(nuevoCliente);
         System.out.println("Cliente registrado correctamente.");
         return registroClientes;
@@ -196,7 +196,7 @@ public class Utilidades {
         do {
             existe = false;
             System.out.print("Cédula: ");
-            cedula = sc.nextLine();
+            cedula = va.validarAlfanumerico(sc);
             Cliente cliente = buscarCliente(registroClientes, cedula);
 
             if (cliente != null) {
@@ -211,7 +211,7 @@ public class Utilidades {
 
     public Cliente pedirClienteRegistrado(LinkedList<Cliente> registroClientes, Scanner sc) {
         System.out.print("Cédula: ");
-        String cedula = sc.nextLine();
+        String cedula = va.validarAlfanumerico(sc);
         Cliente cliente = buscarCliente(registroClientes, cedula);
         if (cliente == null) {
             System.out.println("Cliente no encontrado.");
@@ -249,33 +249,32 @@ public class Utilidades {
             System.out.println("5. Licencia.");
             System.out.println("6. Salir.");
             System.out.print("Ingrese una opción: ");
-            int opc = sc.nextInt();
-            sc.nextLine();
+            int opc = va.validarRango(sc, 1, 6);
 
             switch (opc) {
                 case 1:
                     System.out.print("Nuevo nombre: ");
-                    cliente.setNombre(sc.nextLine());
+                    cliente.setNombre(va.validarTexto(sc));
                     System.out.println("Nombre actualizado.");
                     break;
                 case 2:
                     System.out.print("Nuevo apellido: ");
-                    cliente.setApellido(sc.nextLine());
+                    cliente.setApellido(va.validarTexto(sc));
                     System.out.println("Apellido actualizado.");
                     break;
                 case 3:
                     System.out.print("Nuevo teléfono: ");
-                    cliente.setTelefono(sc.nextLine());
+                    cliente.setTelefono(va.validarSoloNumeros(sc));
                     System.out.println("Teléfono actualizado.");
                     break;
                 case 4:
                     System.out.print("Nueva dirección: ");
-                    cliente.setDireccion(sc.nextLine());
+                    cliente.setDireccion(va.validarDireccion(sc));
                     System.out.println("Dirección actualizada.");
                     break;
                 case 5:
                     System.out.print("Nueva licencia: ");
-                    cliente.setLicenciaConduccion(sc.nextLine());
+                    cliente.setLicenciaConduccion(va.validarAlfanumerico(sc));
                     System.out.println("Licencia actualizada.");
                     break;
                 case 6:
@@ -331,9 +330,9 @@ public class Utilidades {
             System.out.println("Está a punto de eliminar al cliente, ¿está seguro?");
             System.out.println("Una vez eliminado no podrá deshacer esta acción.");
             System.out.print("Ingrese una opción (Si/No): ");
-            String opc = sc.nextLine();
+            boolean confirmar = va.validarSiNo(sc);
 
-            if (opc.equalsIgnoreCase("si")) {
+            if (confirmar) {
                 // Se guardan primero en una lista aparte, porque quitar elementos
                 // mientras se recorre con for-each lanza ConcurrentModificationException.
                 LinkedList<ContratoRenting> activosCliente = new LinkedList<>();
@@ -348,7 +347,6 @@ public class Utilidades {
                         vehiculo.setEstado("Disponible");
                     }
                     contratosActivos.remove(c);
-
                 }
                 // CAMBIO: los contratos finalizados del cliente se conservan (historial e
                 // ingresos)
@@ -356,11 +354,9 @@ public class Utilidades {
                 registroClientes.remove(cliente);
                 System.out.println("Cliente eliminado correctamente.");
                 salir = true;
-            } else if (opc.equalsIgnoreCase("no")) {
+            } else {
                 System.out.println("Acción cancelada.");
                 salir = true;
-            } else {
-                System.out.println("Ingrese una opción correcta (si/no).");
             }
             System.out.println("-------------------------------------");
         }
@@ -381,35 +377,24 @@ public class Utilidades {
         Vehiculo nuevoVehiculo;
         System.out.println("Registrar vehículo.");
         System.out.print("Tipo vehículo (1. Sedan, 2. Camioneta SUV): ");
-        int tipo = sc.nextInt();
-        sc.nextLine();
-
-        if (!(tipo == 1 || tipo == 2)) {
-            System.out.println("Tipo de vehículo no válido.");
-            return registroVehiculos;
-        }
+        int tipo = va.validarRango(sc, 1, 2);
         String placa = pedirPlacaNueva(registroVehiculos, sc);
         System.out.print("Marca: ");
-        String marca = sc.nextLine();
-        System.out.print("Modelo: ");
-        int modelo = sc.nextInt();
-        System.out.print("Precio diario: ");
-        float precioDiario = sc.nextFloat();
+        String marca = va.validarTexto(sc);
+        System.out.print("Modelo (año 1990-2028): ");
+        int modelo = va.validarRango(sc, 1990, 2028); // Acepta solo años razonables para un carro: entre 1990 y 2028
+        System.out.print("Precio diario (sin puntos ni comas, ej. 119500): ");
+        float precioDiario = va.validarDecimalPositivo(sc);
         String estado = "Disponible";
-        sc.nextLine();
 
         if (tipo == 1) {
-            System.out.print("Tipo de combustible (Gasolina / Diésel / Eléctrico): ");
-            String combustible = sc.nextLine();
-            System.out.print("Tipo de transmisión (Automática / Manual): ");
-            String transmision = sc.nextLine();
+            String combustible = pedirCombustible(sc);
+            String transmision = pedirTransmision(sc);
             nuevoVehiculo = new CarroSedan(placa, marca, modelo, precioDiario, estado, combustible, transmision);
         } else {
-            System.out.print("Tipo tracción (4x2 / 4x4): ");
-            String traccion = sc.nextLine();
+            String traccion = pedirTraccion(sc);
             System.out.print("Capacidad del maletero (litros): ");
-            float capacidadMaletero = sc.nextFloat();
-            sc.nextLine();
+            float capacidadMaletero = va.validarDecimalPositivo(sc);
             nuevoVehiculo = new CamionetaSUV(placa, marca, modelo, precioDiario, estado, traccion, capacidadMaletero);
         }
 
@@ -425,7 +410,7 @@ public class Utilidades {
         do {
             existe = false;
             System.out.print("Placa: ");
-            placa = sc.nextLine();
+            placa = va.validarAlfanumerico(sc);
 
             for (Vehiculo v : registroVehiculos) {
                 if (placa.equalsIgnoreCase(v.getPlaca())) {
@@ -471,7 +456,7 @@ public class Utilidades {
     public String consultarVehiculo(LinkedList<Vehiculo> registroVehiculos, Scanner sc) {
         System.out.println("Buscar vehículo.");
         System.out.print("Placa: ");
-        String placa = sc.nextLine();
+        String placa = va.validarAlfanumerico(sc);
         Vehiculo vehiculo = buscarPlaca(registroVehiculos, placa);
         String texto;
         if (vehiculo == null) {
@@ -485,7 +470,7 @@ public class Utilidades {
     public LinkedList<Vehiculo> modificarVehiculo(LinkedList<Vehiculo> registroVehiculos, Scanner sc) {
         System.out.println("Modificar vehículo.");
         System.out.print("Placa: ");
-        String placa = sc.nextLine();
+        String placa = va.validarAlfanumerico(sc);
         Vehiculo vehiculo = buscarPlaca(registroVehiculos, placa);
 
         if (vehiculo == null) {
@@ -511,19 +496,17 @@ public class Utilidades {
             }
             System.out.println("6. Salir.");
             System.out.print("Ingrese una opción: ");
-            int opc = sc.nextInt();
-            sc.nextLine();
+            int opc = va.validarRango(sc, 1, 6);
 
             switch (opc) {
                 case 1:
                     System.out.print("Nueva marca: ");
-                    vehiculo.setMarca(sc.nextLine());
+                    vehiculo.setMarca(va.validarTexto(sc));
                     System.out.println("Marca actualizada.");
                     break;
                 case 2:
-                    System.out.print("Nuevo modelo: ");
-                    vehiculo.setModelo(sc.nextInt());
-                    sc.nextLine();
+                    System.out.print("Nuevo modelo (año 1990-2028): ");
+                    vehiculo.setModelo(va.validarRango(sc, 1990, 2028));
                     System.out.println("Modelo actualizado.");
                     break;
                 case 3:
@@ -532,32 +515,27 @@ public class Utilidades {
                     if (vehiculo.getEstado().equalsIgnoreCase("Alquilado")) {
                         System.out.println("No se puede cambiar el precio de un vehículo alquilado.");
                     } else {
-                        System.out.print("Nuevo precio diario: ");
-                        vehiculo.setPrecioDiario(sc.nextFloat());
-                        sc.nextLine();
+                        System.out.print("Nuevo precio diario (sin puntos ni comas, ej. 119500): ");
+                        vehiculo.setPrecioDiario(va.validarDecimalPositivo(sc));
                         System.out.println("Precio diario actualizado.");
                     }
                     break;
                 case 4:
                     if (esSedan) {
-                        System.out.print("Nuevo tipo de combustible (Gasolina / Diésel / Eléctrico): ");
-                        ((CarroSedan) vehiculo).setTipoCombustible(sc.nextLine());
+                        ((CarroSedan) vehiculo).setTipoCombustible(pedirCombustible(sc));
                         System.out.println("Tipo de combustible actualizado.");
                     } else if (esSUV) {
-                        System.out.print("Nueva tracción (4x2 / 4x4): ");
-                        ((CamionetaSUV) vehiculo).setTraccion(sc.nextLine());
+                        ((CamionetaSUV) vehiculo).setTraccion(pedirTraccion(sc));
                         System.out.println("Tracción actualizada.");
                     }
                     break;
                 case 5:
                     if (esSedan) {
-                        System.out.print("Nueva transmisión (Automática / Manual): ");
-                        ((CarroSedan) vehiculo).setTransmision(sc.nextLine());
+                        ((CarroSedan) vehiculo).setTransmision(pedirTransmision(sc));
                         System.out.println("Transmisión actualizada.");
                     } else if (esSUV) {
                         System.out.print("Nueva capacidad del maletero: ");
-                        ((CamionetaSUV) vehiculo).setCapacidadMaletero(sc.nextFloat());
-                        sc.nextLine();
+                        ((CamionetaSUV) vehiculo).setCapacidadMaletero(va.validarDecimalPositivo(sc));
                         System.out.println("Capacidad del maletero actualizada.");
                     }
                     break;
@@ -576,7 +554,7 @@ public class Utilidades {
     public LinkedList<Vehiculo> eliminarVehiculo(LinkedList<Vehiculo> registroVehiculos, Scanner sc) {
         System.out.println("Eliminar vehículo.");
         System.out.print("Placa: ");
-        String placa = sc.nextLine();
+        String placa = va.validarAlfanumerico(sc);
         Vehiculo vehiculo = buscarPlaca(registroVehiculos, placa);
 
         if (vehiculo == null) {
@@ -597,17 +575,15 @@ public class Utilidades {
             System.out.println("Está a punto de eliminar el vehículo, ¿está seguro?");
             System.out.println("Una vez eliminado no podrá deshacer esta acción.");
             System.out.print("Ingrese una opción (Si/No): ");
-            String opc = sc.nextLine();
+            boolean confirmar = va.validarSiNo(sc);
 
-            if (opc.equalsIgnoreCase("si")) {
+            if (confirmar) {
                 registroVehiculos.remove(vehiculo);
                 System.out.println("Vehículo eliminado correctamente.");
                 salir = true;
-            } else if (opc.equalsIgnoreCase("no")) {
+            } else {
                 System.out.println("Acción cancelada.");
                 salir = true;
-            } else {
-                System.out.println("Ingrese una opción correcta (si/no).");
             }
             System.out.println("-------------------------------------");
         }
@@ -666,7 +642,7 @@ public class Utilidades {
 
     public Vehiculo pedirVehiculoDisponible(LinkedList<Vehiculo> registroVehiculos, Scanner sc) {
         System.out.print("Placa: ");
-        String placa = sc.nextLine();
+        String placa = va.validarAlfanumerico(sc);
         Vehiculo vehiculo = buscarPlaca(registroVehiculos, placa);
 
         if (vehiculo == null) {
@@ -685,29 +661,15 @@ public class Utilidades {
         return vehiculo;
     }
 
-    // TODO: Generar validación de fecha correcta en hu8, aplicando trycatch
-
     public LocalDate pedirFecha(Scanner sc) {
         System.out.print("Fecha de inicio (DD/MM/AAAA): ");
-        String fechaTexto = sc.nextLine();
-        LocalDate fecha = LocalDate.parse(fechaTexto, formatoFecha);
-
-        return fecha;
+        return va.validarFecha(sc);
     }
 
-    // TODO: Validación con try catch
     public int pedirDias(Scanner sc) {
-        int dias;
-        do {
-            System.out.print("Número de días: ");
-            dias = sc.nextInt();
-            sc.nextLine();
-            if (dias < 1) {
-                System.out.println("La cantidad mínima de días es 1.");
-            }
-        } while (dias < 1);
+        System.out.print("Número de días: ");
+        return va.validarEnteroPositivo(sc);
 
-        return dias;
     }
 
     public float calcularValor(int cantidadDias, float precioDiario) {
@@ -753,7 +715,7 @@ public class Utilidades {
             Stack<ContratoRenting> contratosFinalizados, Scanner sc) {
         System.out.println("Buscar contrato.");
         System.out.print("Id del contrato (ej. C1): ");
-        String idContrato = sc.nextLine();
+        String idContrato = va.validarAlfanumerico(sc);
         ContratoRenting contrato = buscarContrato(contratosActivos, contratosFinalizados, idContrato);
         String texto;
         if (contrato == null) {
@@ -768,7 +730,7 @@ public class Utilidades {
             Stack<ContratoRenting> contratosFinalizados, LinkedList<Vehiculo> registroVehiculos, Scanner sc) {
         System.out.println("Modificar contrato.");
         System.out.print("Id del contrato (ej. C1): ");
-        String idContrato = sc.nextLine();
+        String idContrato = va.validarAlfanumerico(sc);
         ContratoRenting contrato = buscarContrato(contratosActivos, contratosFinalizados, idContrato);
 
         if (contrato == null) {
@@ -797,8 +759,7 @@ public class Utilidades {
             System.out.println("2. Días de renting.");
             System.out.println("3. Salir.");
             System.out.print("Ingrese una opción: ");
-            int opc = sc.nextInt();
-            sc.nextLine();
+            int opc = va.validarRango(sc, 1, 3);
 
             LocalDate fechaInicialLocalDate = null;
             int dias = 0;
@@ -843,7 +804,7 @@ public class Utilidades {
             Stack<ContratoRenting> contratosFinalizados, LinkedList<Vehiculo> registroVehiculos, Scanner sc) {
         System.out.println("Finalizar contrato.");
         System.out.print("Id del contrato (ej. C1): ");
-        String idContrato = sc.nextLine();
+        String idContrato = va.validarAlfanumerico(sc);
         ContratoRenting contrato = buscarContrato(contratosActivos, contratosFinalizados, idContrato);
 
         if (contrato == null) {
@@ -863,9 +824,7 @@ public class Utilidades {
         if (vehiculo != null) {
             vehiculo.setEstado("Disponible");
         }
-
         System.out.println("Contrato finalizado correctamente.");
-
         return contratosActivos;
     }
 
@@ -921,6 +880,37 @@ public class Utilidades {
         texto += "Total de ingresos por renting: " + (ingresosRecibidos + ingresosPorRecibir) + "\n";
         texto += "=====================================";
         return texto;
+    }
+
+    public String pedirTraccion(Scanner sc) {
+        System.out.print("Tipo tracción (1. 4x2 / 2. 4x4): ");
+        int opc = va.validarRango(sc, 1, 2);
+        if (opc == 1) {
+            return "4x2";
+        }
+        return "4x4";
+    }
+
+    public String pedirCombustible(Scanner sc) {
+        System.out.print("Tipo de combustible (1. Gasolina / 2. Diésel / 3. Eléctrico): ");
+        int opc = va.validarRango(sc, 1, 3);
+        switch (opc) {
+            case 1:
+                return "Gasolina";
+            case 2:
+                return "Diésel";
+            default:
+                return "Eléctrico";
+        }
+    }
+
+    public String pedirTransmision(Scanner sc) {
+        System.out.print("Tipo de transmisión (1. Automática / 2. Manual): ");
+        int opc = va.validarRango(sc, 1, 2);
+        if (opc == 1) {
+            return "Automática";
+        }
+        return "Manual";
     }
 
 }
