@@ -379,8 +379,12 @@ public class Utilidades {
     public LinkedList<Vehiculo> registrarVehiculo(LinkedList<Vehiculo> registroVehiculos, Scanner sc) {
         Vehiculo nuevoVehiculo;
         System.out.println("Registrar vehículo.");
-        System.out.print("Tipo vehículo (1. Sedan, 2. Camioneta SUV): ");
-        int tipo = va.validarRango(sc, 1, 2);
+        System.out.print("Tipo de vehículo (1. Sedán, 2. Camioneta SUV, 0. Cancelar): ");
+        int tipo = va.validarRango(sc, 0, 2);
+        if (tipo == 0) {
+            System.out.println("Registro cancelado.");
+            return registroVehiculos;
+        }
         String placa = pedirPlacaNueva(registroVehiculos, sc);
         System.out.print("Marca: ");
         String marca = va.validarTexto(sc);
@@ -667,7 +671,13 @@ public class Utilidades {
 
     public LocalDate pedirFecha(Scanner sc) {
         System.out.print("Fecha de inicio (DD/MM/AAAA): ");
-        return va.validarFecha(sc);
+        LocalDate fecha = va.validarFecha(sc);
+        // Un alquiler no puede empezar en el pasado
+        if (fecha.isBefore(LocalDate.now())) {
+            System.out.println("La fecha de inicio no puede ser anterior a hoy.");
+            return pedirFecha(sc);
+        }
+        return fecha;
     }
 
     public int pedirDias(Scanner sc) {
