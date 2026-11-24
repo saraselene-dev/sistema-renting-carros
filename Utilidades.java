@@ -240,7 +240,7 @@ public class Utilidades {
         boolean salir = false;
         while (!salir) {
 
-            System.out.println(mostrarCliente(cliente));
+            System.out.println(mostrar(cliente));
             System.out.println("Ingrese el campo a modificar: ");
             System.out.println("1. Nombre.");
             System.out.println("2. Apellido.");
@@ -290,7 +290,7 @@ public class Utilidades {
         return registroClientes;
     }
 
-    public String mostrarCliente(Cliente cliente) {
+    public String mostrar(Cliente cliente) {
         String texto = "Cédula: " + cliente.getCedula() + "\n";
         texto += "Nombre: " + cliente.getNombre() + "\n";
         texto += "Apellido: " + cliente.getApellido() + "\n";
@@ -323,7 +323,7 @@ public class Utilidades {
         while (!salir) {
 
             System.out.println("Cliente seleccionado: ");
-            System.out.println(mostrarCliente(cliente));
+            System.out.println(mostrar(cliente));
             if (cantidadContratos > 0) {
                 System.out.println(
                         "ADVERTENCIA: El cliente tiene " + cantidadContratos + " contrato(s). Se eliminarán también.");
@@ -372,7 +372,7 @@ public class Utilidades {
         Cliente cliente = pedirClienteRegistrado(registroClientes, sc);
         String texto = "";
         if (cliente != null) {
-            texto = mostrarCliente(cliente);
+            texto = mostrar(cliente);
         }
         return texto;
     }
@@ -448,7 +448,7 @@ public class Utilidades {
         return null;
     }
 
-    public String mostrarVehiculo(Vehiculo vehiculo) {
+    public String mostrar(Vehiculo vehiculo) {
         String texto = "Placa: " + vehiculo.getPlaca() + "\n";
         texto += "Marca: " + vehiculo.getMarca() + "\n";
         texto += "Modelo: " + vehiculo.getModelo() + "\n";
@@ -477,7 +477,7 @@ public class Utilidades {
         if (vehiculo == null) {
             texto = "Vehículo no encontrado.";
         } else {
-            texto = mostrarVehiculo(vehiculo);
+            texto = mostrar(vehiculo);
         }
         return texto;
     }
@@ -497,7 +497,7 @@ public class Utilidades {
         boolean esSUV = vehiculo instanceof CamionetaSUV;
         boolean salir = false;
         while (!salir) {
-            System.out.println(mostrarVehiculo(vehiculo));
+            System.out.println(mostrar(vehiculo));
             System.out.println("Ingrese el campo a modificar: ");
             System.out.println("1. Marca.");
             System.out.println("2. Modelo.");
@@ -593,7 +593,7 @@ public class Utilidades {
         while (!salir) {
 
             System.out.println("Vehículo seleccionado: ");
-            System.out.println(mostrarVehiculo(vehiculo));
+            System.out.println(mostrar(vehiculo));
             System.out.println("Está a punto de eliminar el vehículo, ¿está seguro?");
             System.out.println("Una vez eliminado no podrá deshacer esta acción.");
             System.out.print("Ingrese una opción (Si/No): ");
@@ -629,7 +629,7 @@ public class Utilidades {
         }
 
         System.out.println("Cliente: ");
-        System.out.println(mostrarCliente(cliente));
+        System.out.println(mostrar(cliente));
 
         Vehiculo vehiculo = pedirVehiculoDisponible(registroVehiculos, sc);
         if (vehiculo == null) {
@@ -679,7 +679,7 @@ public class Utilidades {
             return null;
         } else {
             System.out.println("Vehículo encontrado.");
-            System.out.println(mostrarVehiculo(vehiculo));
+            System.out.println(mostrar(vehiculo));
         }
 
         return vehiculo;
@@ -732,7 +732,7 @@ public class Utilidades {
         return null;
     }
 
-    public String mostrarContrato(ContratoRenting contrato, Queue<ContratoRenting> contratosActivos) {
+    public String mostrar(ContratoRenting contrato, Queue<ContratoRenting> contratosActivos) {
         String texto = "Id contrato: " + contrato.getIdContrato() + "\n";
         texto += "Cédula del cliente: " + contrato.getCedulaCliente() + "\n";
         texto += "Placa del vehículo: " + contrato.getPlacaVehiculo() + "\n";
@@ -759,7 +759,7 @@ public class Utilidades {
         if (contrato == null) {
             texto = "Contrato no encontrado.";
         } else {
-            texto = mostrarContrato(contrato, contratosActivos);
+            texto = mostrar(contrato, contratosActivos);
         }
         return texto;
     }
@@ -791,7 +791,7 @@ public class Utilidades {
         boolean salir = false;
         while (!salir) {
 
-            System.out.println(mostrarContrato(contrato, contratosActivos));
+            System.out.println(mostrar(contrato, contratosActivos));
             System.out.println("Ingrese el campo a modificar: ");
             System.out.println("1. Fecha de inicio.");
             System.out.println("2. Días de renting.");
@@ -869,6 +869,58 @@ public class Utilidades {
         return contratosActivos;
     }
 
-    // TODO (HU7): renombrar mostrarCliente, mostrarVehiculo y mostrarContrato a
-    // "mostrar" (sobrecarga)
+    // Informe general: con todos los registros, los contratos agrupados y los
+    // ingresos
+    public String generarInforme(LinkedList<Cliente> registroClientes, LinkedList<Vehiculo> registroVehiculos,
+            Queue<ContratoRenting> contratosActivos, Stack<ContratoRenting> contratosFinalizados) {
+        String texto = "========== INFORME GENERAL ==========\n";
+
+        texto += "\n----- CLIENTES -----\n";
+        if (registroClientes.isEmpty()) {
+            texto += "No hay clientes registrados.\n";
+        } else {
+            for (Cliente c : registroClientes) {
+                texto += mostrar(c) + "\n-------------------------------------\n";
+            }
+        }
+
+        texto += "\n----- VEHÍCULOS -----\n";
+        if (registroVehiculos.isEmpty()) {
+            texto += "No hay vehículos registrados.\n";
+        } else {
+            for (Vehiculo v : registroVehiculos) {
+                texto += mostrar(v) + "\n-------------------------------------\n";
+            }
+        }
+
+        float ingresosPorRecibir = 0;
+        texto += "\n----- CONTRATOS ACTIVOS -----\n";
+        if (contratosActivos.isEmpty()) {
+            texto += "No hay contratos activos.\n";
+        } else {
+            for (ContratoRenting c : contratosActivos) {
+                texto += mostrar(c, contratosActivos) + "\n-------------------------------------\n";
+                ingresosPorRecibir += c.getValorTotal();
+            }
+        }
+
+        float ingresosRecibidos = 0;
+        texto += "\n----- CONTRATOS FINALIZADOS -----\n";
+        if (contratosFinalizados.isEmpty()) {
+            texto += "No hay contratos finalizados.\n";
+        } else {
+            for (ContratoRenting c : contratosFinalizados) {
+                texto += mostrar(c, contratosActivos) + "\n-------------------------------------\n";
+                ingresosRecibidos += c.getValorTotal();
+            }
+        }
+
+        texto += "\n----- INGRESOS -----\n";
+        texto += "Ingresos recibidos (contratos finalizados): " + ingresosRecibidos + "\n";
+        texto += "Ingresos por recibir (contratos activos): " + ingresosPorRecibir + "\n";
+        texto += "Total de ingresos por renting: " + (ingresosRecibidos + ingresosPorRecibir) + "\n";
+        texto += "=====================================";
+        return texto;
+    }
+
 }
