@@ -68,7 +68,4 @@ public class Cliente {
         LicenciaConduccion = licenciaConduccion;
     }
 
-    
-
-    
 }

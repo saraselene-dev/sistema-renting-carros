@@ -6,7 +6,7 @@ public class ContratoRenting {
     private String FechaFin;
     private int TotalDias;
     private float ValorTotal;
- 
+
     public ContratoRenting(String idContrato, String cedulaCliente, String placaVehiculo, String fechaInicio,
             String fechaFin, int totalDias, float valorTotal) {
         IdContrato = idContrato;
@@ -37,7 +37,7 @@ public class ContratoRenting {
     public String getFechaFin() {
         return FechaFin;
     }
-    
+
     public int getTotalDias() {
         return TotalDias;
     }

@@ -1,5 +1,5 @@
 public class CarroSedan extends Vehiculo {
-    
+
     private String TipoCombustible; // Gasolina, diésel o eléctrico
     private String Transmision;// Automática o manual
 
